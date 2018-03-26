@@ -1,2 +1,2 @@
 # WikiRace
-WikiRace game build using React Native
+WikiRace game built using React Native
