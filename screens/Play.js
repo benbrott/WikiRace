@@ -1,6 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View, Button} from 'react-native';
+import CustomStatusBar from '../CustomStatusBar'
+import Toolbar from '../Toolbar'
 
 export default class Play extends Component {
     constructor(props){
@@ -29,12 +31,16 @@ export default class Play extends Component {
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
+                    <CustomStatusBar />
+                    <Toolbar />
                   <ActivityIndicator/>
                 </View>
             )
         }
         return (
             <View style={styles.container}>
+                <CustomStatusBar />
+                <Toolbar />
                 <Text>Play</Text>
                 <Text>Start: {this.state.start.title}</Text>
                 <Text>Goal: {this.state.goal.title}</Text>
@@ -60,8 +66,6 @@ export default class Play extends Component {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
+      flex: 1
   },
 });

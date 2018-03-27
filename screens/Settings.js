@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import {AsyncStorage, ActivityIndicator, StyleSheet, Text, View, Button} from 'react-native';
 import * as constants from '../constants'
+import CustomStatusBar from '../CustomStatusBar'
+import Toolbar from '../Toolbar'
 
 export default class Settings extends Component {
     constructor(props){
@@ -26,21 +28,22 @@ export default class Settings extends Component {
         if (this.state.isLoading) {
             return(
                 <View style={styles.container}>
+                    <CustomStatusBar />
+                    <Toolbar />
                   <ActivityIndicator/>
                 </View>
             )
         }
         return (
             <View style={styles.container}>
+            <CustomStatusBar />
+            <Toolbar />
               <Text>{'random:' + this.state.random}</Text>
               <Button
                 title="Switch"
                 onPress={() => {
                     AsyncStorage.setItem('random', 'popular');
-                    this.setState({
-                        ...this.state,
-                        random: this.state.random === 'popular' ? 'all' : 'popular'
-                    });
+                    this.setState({random: this.state.random === 'popular' ? 'all' : 'popular'});
                 }}
               />
               <Button
@@ -49,10 +52,7 @@ export default class Settings extends Component {
                     for (var setting in constants.defaultSettings) {
                         AsyncStorage.setItem(setting, constants.defaultSettings[setting]);
                     }
-                    this.setState({
-                        ...this.state,
-                        ...constants.defaultSettings
-                    });
+                    this.setState({...constants.defaultSettings});
                 }}
               />
             </View>
@@ -62,8 +62,6 @@ export default class Settings extends Component {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
+      flex: 1
   },
 });

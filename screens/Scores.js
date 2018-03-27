@@ -1,6 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
 import {AsyncStorage, StyleSheet, Text, View, Button} from 'react-native';
+import CustomStatusBar from '../CustomStatusBar'
+import Toolbar from '../Toolbar'
 
 export default class Scores extends Component {
     constructor(props){
@@ -25,6 +27,8 @@ export default class Scores extends Component {
     render() {
       return (
         <View style={styles.container}>
+            <CustomStatusBar />
+            <Toolbar />
           <Text>{this.state.name != null ? this.state.name : 'NULL'}</Text>
           <Button
             title="Go back"
@@ -37,8 +41,6 @@ export default class Scores extends Component {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
+      flex: 1
   },
 });

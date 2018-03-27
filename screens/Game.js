@@ -1,6 +1,9 @@
 'use strict';
 import React, {Component} from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
+import CustomStatusBar from '../CustomStatusBar'
+import Toolbar from '../Toolbar'
+import * as constants from '../constants'
 
 export default class Game extends Component {
     constructor(props){
@@ -17,7 +20,7 @@ export default class Game extends Component {
     }
 
     updateLinks = (current, links, plcontinue) => {
-        const url = 'https://en.wikipedia.org/w/api.php?action=query&prop=links&plnamespace=0&pllimit=max&format=json&titles=' + current.title.replace(' ', '+') + (plcontinue ? '&plcontinue=' + plcontinue : '');
+        const url = 'https://en.wikipedia.org/w/api.php?action=query&prop=links&plnamespace=0&pllimit=max&format=json&titles=' + current.title.split(' ').join('+').split('&').join('%26') + (plcontinue ? '&plcontinue=' + plcontinue : '');
         fetch(url).then(response => response.json()).then(response => {
             const updatedLinks = links.concat(response.query.pages[Object.keys(response.query.pages)[0]].links);
             if (response.continue) {
@@ -25,7 +28,6 @@ export default class Game extends Component {
             }
             else {
                 this.setState({
-                    ...this.state,
                     isLoading: false,
                     current: current,
                     links: updatedLinks
@@ -49,7 +51,6 @@ export default class Game extends Component {
             return(
                 <TouchableOpacity onPress={() => {
                     this.setState({
-                        ...this.state,
                         isLoading: true,
                         count: this.state.count + 1
                     });
@@ -65,12 +66,16 @@ export default class Game extends Component {
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
+                <CustomStatusBar />
+                <Toolbar />
                   <ActivityIndicator/>
                 </View>
             )
         }
       return (
           <View style={styles.container}>
+            <CustomStatusBar />
+            <Toolbar />
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 {this.renderLinks()}
           </ScrollView>
@@ -84,25 +89,24 @@ export default class Game extends Component {
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
+      flex: 1
   },
     contentContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        padding: 5
+        paddingHorizontal: 5,
+        paddingVertical: 20
     },
     card: {
-        backgroundColor: '#758449',
+        backgroundColor: constants.COLOR_SECONDARY,
         padding: 10,
         margin: 3,
         borderRadius: 10
     },
     link: {
         fontSize: 14,
-        color: '#ffffff'
+        color: 'white'
     }
 });
