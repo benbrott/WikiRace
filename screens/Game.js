@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo} from 'react-native';
 import CustomStatusBar from '../CustomStatusBar'
 import Toolbar from '../Toolbar'
 import * as constants from '../constants'
@@ -16,7 +16,26 @@ export default class Game extends Component {
             goal: {title: '2 Chainz'},//params.goal,
             count: 0
         }
-        this.linkClicked({title: 'Kanye West'});//params.start
+        NetInfo.isConnected.fetch().then(isConnected => {
+            this.setState({
+                isConnected: isConnected,
+            });
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    componentDidMount() {
+        NetInfo.isConnected.addEventListener('connectionChange', this.onConnectivityChange);
+        this.linkClicked({title: 'Kanye West'});//this.state.current
+    }
+
+    componentWillUnmount() {
+        NetInfo.removeEventListener('connectionChange', this.onConnectivityChange);
+    }
+
+    onConnectivityChange = isConnected => {
+        this.setState({isConnected: isConnected});
     }
 
     updateLinks = (current, links, plcontinue) => {
@@ -63,6 +82,16 @@ export default class Game extends Component {
     }
 
     render() {
+        if (!this.state.isConnected) {
+            return(
+                <View style={styles.container}>
+                    <CustomStatusBar/>
+                    <View style={styles.connectionContainer}>
+                        <Text style={styles.connectionText}>Unable to connect. Please check your network settings.</Text>
+                    </View>
+                </View>
+            );
+        }
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
@@ -108,5 +137,16 @@ const styles = StyleSheet.create({
     link: {
         fontSize: 14,
         color: 'white'
-    }
+    },
+    connectionContainer: {
+          flex: 1,
+          backgroundColor: constants.COLOR_MAIN,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 30
+      },
+      connectionText: {
+          color: 'white',
+          fontSize: 24
+      }
 });

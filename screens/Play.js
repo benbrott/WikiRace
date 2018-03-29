@@ -1,22 +1,43 @@
 'use strict';
 import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View, Button} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, View, Button, NetInfo} from 'react-native';
 import CustomStatusBar from '../CustomStatusBar'
 import Toolbar from '../Toolbar'
+import * as constants from '../constants'
 
 export default class Play extends Component {
     constructor(props){
         super(props);
-        this.state = {isLoading: true}
+        this.state = {isLoading: true};
+        NetInfo.isConnected.fetch().then(isConnected => {
+            this.setState({
+                isConnected: isConnected,
+            });
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     componentDidMount() {
+        NetInfo.isConnected.addEventListener('connectionChange', this.onConnectivityChange);
         this.getRandomPages();
+    }
+
+    componentWillUnmount() {
+        NetInfo.removeEventListener('connectionChange', this.onConnectivityChange);
+    }
+
+    onConnectivityChange = isConnected => {
+        if (isConnected && this.isLoading) {
+            this.getRandomPages()
+        }
+        this.setState({isConnected: isConnected});
     }
 
     getRandomPages = () => {
         const url = 'https://en.wikipedia.org/w/api.php?action=query&list=random&rnlimit=2&rnnamespace=0&format=json'
         fetch(url).then(response => response.json()).then(response => {
+            console.log(this.state.isConnected);
             this.setState({
                 isLoading: false,
                 start: response.query.random[0],
@@ -28,6 +49,16 @@ export default class Play extends Component {
     }
 
     render() {
+        if (!this.state.isConnected) {
+            return(
+                <View style={styles.container}>
+                    <CustomStatusBar/>
+                    <View style={styles.connectionContainer}>
+                        <Text style={styles.connectionText}>Unable to connect. Please check your network settings.</Text>
+                    </View>
+                </View>
+            );
+        }
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
@@ -68,4 +99,15 @@ const styles = StyleSheet.create({
   container: {
       flex: 1
   },
+  connectionContainer: {
+        flex: 1,
+        backgroundColor: constants.COLOR_MAIN,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 30
+    },
+    connectionText: {
+        color: 'white',
+        fontSize: 24
+    }
 });
