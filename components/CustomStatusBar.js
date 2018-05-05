@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import {StyleSheet, View, Platform, StatusBar} from 'react-native';
-import * as constants from './constants';
+import * as constants from '../constants';
 
 const MyStatusBar = ({backgroundColor, ...props}) => (
       <View style={[styles.statusBar, {backgroundColor}]}>

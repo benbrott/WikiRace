@@ -2,8 +2,8 @@
 import React, {Component} from 'react';
 import {AsyncStorage, ActivityIndicator, StyleSheet, Text, View, Button} from 'react-native';
 import * as constants from '../constants'
-import CustomStatusBar from '../CustomStatusBar'
-import Toolbar from '../Toolbar'
+import CustomStatusBar from '../components/CustomStatusBar'
+import Toolbar from '../components/Toolbar'
 
 export default class Settings extends Component {
     constructor(props){
@@ -40,14 +40,14 @@ export default class Settings extends Component {
             <Toolbar />
               <Text>{'random:' + this.state.random}</Text>
               <Button
-                title="Switch"
+                title='Switch'
                 onPress={() => {
                     AsyncStorage.setItem('random', 'popular');
                     this.setState({random: this.state.random === 'popular' ? 'all' : 'popular'});
                 }}
               />
               <Button
-                title="Reset"
+                title='Reset'
                 onPress={() => {
                     for (var setting in constants.defaultSettings) {
                         AsyncStorage.setItem(setting, constants.defaultSettings[setting]);

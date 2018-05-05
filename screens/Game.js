@@ -1,8 +1,9 @@
 'use strict';
 import React, {Component} from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo} from 'react-native';
-import CustomStatusBar from '../CustomStatusBar'
-import Toolbar from '../Toolbar'
+import CustomStatusBar from '../components/CustomStatusBar'
+import Toolbar from '../components/Toolbar'
+import Disconnected from './Disconnected'
 import * as constants from '../constants'
 
 export default class Game extends Component {
@@ -84,12 +85,7 @@ export default class Game extends Component {
     render() {
         if (!this.state.isConnected) {
             return(
-                <View style={styles.container}>
-                    <CustomStatusBar/>
-                    <View style={styles.connectionContainer}>
-                        <Text style={styles.connectionText}>Unable to connect. Please check your network settings.</Text>
-                    </View>
-                </View>
+                <Disconnected />
             );
         }
         if(this.state.isLoading) {
@@ -117,9 +113,9 @@ export default class Game extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
       flex: 1
-  },
+    },
     contentContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -138,15 +134,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'white'
     },
-    connectionContainer: {
-          flex: 1,
-          backgroundColor: constants.COLOR_MAIN,
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 30
-      },
-      connectionText: {
-          color: 'white',
-          fontSize: 24
-      }
 });

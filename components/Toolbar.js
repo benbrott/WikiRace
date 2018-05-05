@@ -1,9 +1,9 @@
 'use strict';
 import React, { Component } from 'react';
 import { StyleSheet, Text, Platform, View } from 'react-native';
-import * as constants from './constants';
+import * as constants from '../constants';
 
-class Toolbar extends Component {
+export default class Toolbar extends Component {
 
     settingsButton = () => {
         return(
@@ -43,5 +43,3 @@ const styles = StyleSheet.create({
         fontSize: 18
     }
 });
-
-export default Toolbar;

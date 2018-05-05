@@ -1,8 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import CustomStatusBar from '../CustomStatusBar'
-import Toolbar from '../Toolbar'
+import CustomStatusBar from '../components/CustomStatusBar'
+import Toolbar from '../components/Toolbar'
 
 export default class Home extends Component {
     render() {
@@ -12,15 +12,15 @@ export default class Home extends Component {
             <Toolbar back={true} settings={true}/>
           <Text>Home</Text>
           <Button
-            title="Play"
+            title='Play'
             onPress={() => this.props.navigation.navigate('Play')}
           />
           <Button
-            title="Scores"
+            title='Scores'
             onPress={() => this.props.navigation.navigate('Scores')}
           />
           <Button
-            title="Settings"
+            title='Settings'
             onPress={() => this.props.navigation.navigate('Settings')}
           />
         </View>

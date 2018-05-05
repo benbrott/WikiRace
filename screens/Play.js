@@ -1,8 +1,9 @@
 'use strict';
 import React, {Component} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View, Button, NetInfo} from 'react-native';
-import CustomStatusBar from '../CustomStatusBar'
-import Toolbar from '../Toolbar'
+import CustomStatusBar from '../components/CustomStatusBar'
+import Toolbar from '../components/Toolbar'
+import Disconnected from './Disconnected'
 import * as constants from '../constants'
 
 export default class Play extends Component {
@@ -20,7 +21,9 @@ export default class Play extends Component {
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('connectionChange', this.onConnectivityChange);
-        this.getRandomPages();
+        if (this.state.isConnected) {
+            this.getRandomPages();
+        }
     }
 
     componentWillUnmount() {
@@ -28,7 +31,7 @@ export default class Play extends Component {
     }
 
     onConnectivityChange = isConnected => {
-        if (isConnected && this.isLoading) {
+        if (isConnected && this.state.isLoading) {
             this.getRandomPages()
         }
         this.setState({isConnected: isConnected});
@@ -51,12 +54,7 @@ export default class Play extends Component {
     render() {
         if (!this.state.isConnected) {
             return(
-                <View style={styles.container}>
-                    <CustomStatusBar/>
-                    <View style={styles.connectionContainer}>
-                        <Text style={styles.connectionText}>Unable to connect. Please check your network settings.</Text>
-                    </View>
-                </View>
+                <Disconnected />
             );
         }
         if(this.state.isLoading) {
@@ -76,18 +74,18 @@ export default class Play extends Component {
                 <Text>Start: {this.state.start.title}</Text>
                 <Text>Goal: {this.state.goal.title}</Text>
                 <Button
-                    title="Random"
+                    title='Random'
                     onPress={() => this.getRandomPages()}
                 />
                 <Button
-                    title="Game"
+                    title='Game'
                     onPress={() => this.props.navigation.navigate('Game', {
                         start: this.state.start,
                         goal: this.state.goal
                     })}
                 />
                 <Button
-                    title="Go back"
+                    title='Go back'
                     onPress={() => this.props.navigation.goBack()}
                 />
             </View>
@@ -98,16 +96,5 @@ export default class Play extends Component {
 const styles = StyleSheet.create({
   container: {
       flex: 1
-  },
-  connectionContainer: {
-        flex: 1,
-        backgroundColor: constants.COLOR_MAIN,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 30
-    },
-    connectionText: {
-        color: 'white',
-        fontSize: 24
-    }
+  }
 });
