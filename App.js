@@ -7,6 +7,7 @@ import Play from './screens/Play'
 import Game from './screens/Game'
 import Scores from './screens/Scores'
 import Settings from './screens/Settings'
+import Summary from './screens/Summary'
 import * as constants from './constants'
 
 const RootStack = StackNavigator(
@@ -25,6 +26,9 @@ const RootStack = StackNavigator(
     },
     Settings: {
       screen: Settings,
+    },
+    Summary: {
+      screen: Summary,
     },
   },
   {

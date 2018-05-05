@@ -61,9 +61,16 @@ export default class Game extends Component {
     linkClicked = (current) => {
         if (current.title == this.state.goal.title) {
             console.log('WINNER!');
+            this.props.navigation.navigate('Summary', {
+                start: this.state.start.title,
+                goal: this.state.goal.title,
+                count: this.state.count + 1
+            });
         }
-        let links = [];
-        this.updateLinks(current, links, null);
+        else {
+            let links = [];
+            this.updateLinks(current, links, null);
+        }
     }
 
     renderLinks = (state) => {
