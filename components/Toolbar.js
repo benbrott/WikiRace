@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, Text, Platform, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, Platform, View } from 'react-native';
 import * as constants from '../constants';
 
 export default class Toolbar extends Component {
@@ -19,8 +19,9 @@ export default class Toolbar extends Component {
 
     render() {
         const {back, settings} = this.props;
+        const isIphoneX = constants.isIphoneX(Platform.OS, Dimensions.get('window'));
         return (
-            <View style={styles.bar}>
+            <View style={[styles.bar, isIphoneX ? styles.isIphoneXBar : null]}>
                 {back ? this.backButton() : null}
                 <Text style={styles.title}>WikiRace</Text>
                 {settings ? this.settingsButton() : null}
@@ -37,6 +38,9 @@ const styles = StyleSheet.create({
         backgroundColor: constants.COLOR_MAIN,
         alignItems: 'center',
         justifyContent: 'space-between'
+    },
+    isIphoneXBar: {
+        paddingTop: 30
     },
     title: {
         color: 'white',
