@@ -23,6 +23,8 @@ export default class Settings extends Component {
         }
     }
 
+    backHandler = () => this.props.navigation.goBack();
+
     render() {
         if (this.state.isLoading) {
             return(
@@ -34,7 +36,7 @@ export default class Settings extends Component {
         }
         return (
             <View style={styles.container}>
-            <Toolbar />
+            <Toolbar back={true} backHandler={this.backHandler} />
               <Text>{'random:' + this.state.random}</Text>
               <Button
                 title='Switch'

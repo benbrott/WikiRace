@@ -7,7 +7,7 @@ export default class Home extends Component {
     render() {
       return (
         <View style={styles.container}>
-            <Toolbar back={true} settings={true}/>
+            <Toolbar back={false} settings={true}/>
           <Text>Home</Text>
           <Button
             title='Play'

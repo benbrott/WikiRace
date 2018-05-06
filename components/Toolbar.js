@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, Platform, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, Platform, View, TouchableOpacity, Image } from 'react-native';
 import CustomStatusBar from './CustomStatusBar'
 import * as constants from '../constants';
 
@@ -27,26 +27,53 @@ export default class Toolbar extends Component {
 
     settingsButton = () => {
         return(
-            <Text style={styles.title}>S</Text>
+            <TouchableOpacity onPress={() => this.props.settingsHandler()}>
+                <Image source={require('../images/settings.png')} resizeMode='contain' style={styles.button}/>
+            </TouchableOpacity>
+        );
+    }
+
+    homeButton = () => {
+        return(
+            <TouchableOpacity onPress={() => this.props.homeHandler()}>
+                <Image source={require('../images/home.png')} resizeMode='contain' style={styles.button}/>
+            </TouchableOpacity>
+        );
+    }
+
+    scoresButton = () => {
+        return(
+            <TouchableOpacity onPress={() => this.props.scoresHandler()}>
+                <Image source={require('../images/scores.png')} resizeMode='contain' style={styles.button}/>
+            </TouchableOpacity>
         );
     }
 
     backButton = () => {
         return(
-            <Text style={styles.title}>B</Text>
+            <TouchableOpacity onPress={() => this.props.backHandler()}>
+                <Image source={require('../images/back.png')} resizeMode='contain' style={styles.button}/>
+            </TouchableOpacity>
         );
     }
 
     render() {
         const {back, settings} = this.props;
-        const isIphoneX = constants.isIphoneX(this.state.os, this.state.dims);
+        const isIPhoneX = constants.isIPhoneX(this.state.os, this.state.dims);
+        const isIPhoneXLandscape = constants.isIPhoneXLandscape(this.state.os, this.state.dims);
         return (
             <View style={styles.constainer}>
                 <CustomStatusBar dims={this.state.dims} />
-                <View style={[styles.bar, isIphoneX ? styles.isIphoneXBar : null]}>
-                    {back ? this.backButton() : null}
-                    <Text style={styles.title}>WikiRace</Text>
-                    {settings ? this.settingsButton() : null}
+                <View style={[styles.bar, isIPhoneX ? styles.iPhoneXBar : null]}>
+                    <View style={[styles.leftBar, isIPhoneXLandscape ? styles.extraPadding : null]}>
+                        {back ? this.backButton() : null}
+                    </View>
+                    <View style={styles.centerBar}>
+                        <Text style={styles.title}>WikiRace</Text>
+                    </View>
+                    <View style={[styles.rightBar, isIPhoneXLandscape ? styles.extraPadding : null]}>
+                        {settings ? this.settingsButton() : null}
+                    </View>
                 </View>
             </View>
         );
@@ -59,17 +86,42 @@ const styles = StyleSheet.create({
     },
     bar: {
         flexDirection: 'row',
-        paddingHorizontal: 15,
         paddingVertical: 10,
         backgroundColor: constants.COLOR_MAIN,
         alignItems: 'center',
-        justifyContent: 'space-between'
     },
-    isIphoneXBar: {
+    leftBar: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingHorizontal: 10
+    },
+    centerBar: {
+        flex: 2,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    rightBar:  {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingHorizontal: 10
+    },
+    extraPadding: {
+        paddingHorizontal: 20
+    },
+    iPhoneXBar: {
         paddingTop: 30
     },
     title: {
         color: 'white',
         fontSize: 18
-    }
+    },
+    button: {
+        height: constants.BUTTON_HEIGHT,
+        aspectRatio: 1
+    },
 });
