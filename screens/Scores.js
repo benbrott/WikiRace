@@ -1,7 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
 import {AsyncStorage, StyleSheet, Text, View, Button} from 'react-native';
-import CustomStatusBar from '../components/CustomStatusBar'
 import Toolbar from '../components/Toolbar'
 
 export default class Scores extends Component {
@@ -27,7 +26,6 @@ export default class Scores extends Component {
     render() {
       return (
         <View style={styles.container}>
-            <CustomStatusBar />
             <Toolbar />
           <Text>{this.state.name != null ? this.state.name : 'NULL'}</Text>
           <Button

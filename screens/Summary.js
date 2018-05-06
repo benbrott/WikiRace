@@ -1,7 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
-import CustomStatusBar from '../components/CustomStatusBar'
 import Toolbar from '../components/Toolbar'
 import * as constants from '../constants'
 
@@ -19,7 +18,6 @@ export default class Summary extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <CustomStatusBar />
                 <Toolbar />
                 <Text>{this.state.start}</Text>
                 <Text>{this.state.goal}</Text>

@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import {AsyncStorage, ActivityIndicator, StyleSheet, Text, View, Button} from 'react-native';
 import * as constants from '../constants'
-import CustomStatusBar from '../components/CustomStatusBar'
 import Toolbar from '../components/Toolbar'
 
 export default class Settings extends Component {
@@ -28,7 +27,6 @@ export default class Settings extends Component {
         if (this.state.isLoading) {
             return(
                 <View style={styles.container}>
-                    <CustomStatusBar />
                     <Toolbar />
                   <ActivityIndicator/>
                 </View>
@@ -36,7 +34,6 @@ export default class Settings extends Component {
         }
         return (
             <View style={styles.container}>
-            <CustomStatusBar />
             <Toolbar />
               <Text>{'random:' + this.state.random}</Text>
               <Button

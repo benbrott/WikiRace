@@ -1,14 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import CustomStatusBar from '../components/CustomStatusBar'
 import Toolbar from '../components/Toolbar'
 
 export default class Home extends Component {
     render() {
       return (
         <View style={styles.container}>
-            <CustomStatusBar />
             <Toolbar back={true} settings={true}/>
           <Text>Home</Text>
           <Button

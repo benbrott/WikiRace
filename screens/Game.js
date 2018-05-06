@@ -1,7 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo} from 'react-native';
-import CustomStatusBar from '../components/CustomStatusBar'
 import Toolbar from '../components/Toolbar'
 import Disconnected from './Disconnected'
 import * as constants from '../constants'
@@ -98,7 +97,6 @@ export default class Game extends Component {
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
-                <CustomStatusBar />
                 <Toolbar />
                   <ActivityIndicator/>
                 </View>
@@ -106,7 +104,6 @@ export default class Game extends Component {
         }
       return (
           <View style={styles.container}>
-            <CustomStatusBar />
             <Toolbar />
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 {this.renderLinks()}

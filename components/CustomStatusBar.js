@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {StyleSheet, View, Platform, StatusBar} from 'react-native';
+import {StyleSheet, View, Platform, StatusBar, Dimensions} from 'react-native';
 import * as constants from '../constants';
 
 const MyStatusBar = ({backgroundColor, ...props}) => (
@@ -10,7 +10,14 @@ const MyStatusBar = ({backgroundColor, ...props}) => (
 );
 
 class CustomStatusBar extends Component {
+    constructor(props){
+        super(props);
+    }
     render() {
+        const isLandscape = constants.isLandscape(this.props.dims);
+        if (isLandscape) {
+            return null;
+        }
         return (
             <MyStatusBar backgroundColor={constants.COLOR_MAIN} barStyle='light-content'/>
         );
