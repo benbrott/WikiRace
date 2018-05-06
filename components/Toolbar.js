@@ -57,8 +57,16 @@ export default class Toolbar extends Component {
         );
     }
 
+    replayButton = () => {
+        return(
+            <TouchableOpacity onPress={() => this.props.replayHandler()}>
+                <Image source={require('../images/replay.png')} resizeMode='contain' style={styles.button}/>
+            </TouchableOpacity>
+        );
+    }
+
     render() {
-        const {back, settings} = this.props;
+        const {back, settings, scores, home, replay} = this.props;
         const isIPhoneX = constants.isIPhoneX(this.state.os, this.state.dims);
         const isIPhoneXLandscape = constants.isIPhoneXLandscape(this.state.os, this.state.dims);
         return (
@@ -66,13 +74,17 @@ export default class Toolbar extends Component {
                 <CustomStatusBar dims={this.state.dims} />
                 <View style={[styles.bar, isIPhoneX ? styles.iPhoneXBar : null]}>
                     <View style={[styles.leftBar, isIPhoneXLandscape ? styles.extraPadding : null]}>
+                        {home ? this.homeButton() : null}
                         {back ? this.backButton() : null}
+                        {!back && !home && scores ? this.scoresButton() : null}
                     </View>
                     <View style={styles.centerBar}>
                         <Text style={styles.title}>WikiRace</Text>
                     </View>
                     <View style={[styles.rightBar, isIPhoneXLandscape ? styles.extraPadding : null]}>
                         {settings ? this.settingsButton() : null}
+                        {replay ? this.replayButton() : null}
+                        {(back || home) && scores ? this.scoresButton() : null}
                     </View>
                 </View>
             </View>

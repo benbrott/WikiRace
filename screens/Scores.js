@@ -10,6 +10,8 @@ export default class Scores extends Component {
         this.fetchData();
     }
 
+    backHandler = () => this.props.navigation.goBack();
+
     fetchData = async () => {
         try {
             const value = await AsyncStorage.getItem('name');
@@ -26,7 +28,7 @@ export default class Scores extends Component {
     render() {
       return (
         <View style={styles.container}>
-            <Toolbar />
+            <Toolbar back={true} backHandler={this.backHandler} />
           <Text>{this.state.name != null ? this.state.name : 'NULL'}</Text>
           <Button
             title='Go back'

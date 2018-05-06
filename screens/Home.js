@@ -4,22 +4,18 @@ import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import Toolbar from '../components/Toolbar'
 
 export default class Home extends Component {
+    settingsHandler = () => this.props.navigation.navigate('Settings');
+
+    scoresHandler = () => this.props.navigation.navigate('Scores');
+
     render() {
       return (
         <View style={styles.container}>
-            <Toolbar back={false} settings={true}/>
+            <Toolbar scores={true} scoresHandler={this.scoresHandler} settings={true} settingsHandler={this.settingsHandler} />
           <Text>Home</Text>
           <Button
             title='Play'
             onPress={() => this.props.navigation.navigate('Play')}
-          />
-          <Button
-            title='Scores'
-            onPress={() => this.props.navigation.navigate('Scores')}
-          />
-          <Button
-            title='Settings'
-            onPress={() => this.props.navigation.navigate('Settings')}
           />
         </View>
       );

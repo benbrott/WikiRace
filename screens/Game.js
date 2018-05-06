@@ -57,6 +57,10 @@ export default class Game extends Component {
         });
     }
 
+    homeHandler = () => this.props.navigation.navigate('Home');
+
+    scoresHandler = () => this.props.navigation.navigate('Scores');
+
     linkClicked = (current) => {
         if (current.title == this.state.goal.title) {
             console.log('WINNER!');
@@ -97,14 +101,14 @@ export default class Game extends Component {
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
-                <Toolbar />
+                <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
                   <ActivityIndicator/>
                 </View>
             )
         }
       return (
           <View style={styles.container}>
-            <Toolbar />
+            <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 {this.renderLinks()}
           </ScrollView>

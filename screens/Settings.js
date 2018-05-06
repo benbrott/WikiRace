@@ -29,7 +29,7 @@ export default class Settings extends Component {
         if (this.state.isLoading) {
             return(
                 <View style={styles.container}>
-                    <Toolbar />
+                <Toolbar back={true} backHandler={this.backHandler}/>
                   <ActivityIndicator/>
                 </View>
             )

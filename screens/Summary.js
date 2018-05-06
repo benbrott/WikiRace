@@ -15,10 +15,16 @@ export default class Summary extends Component {
         }
     }
 
+    homeHandler = () => this.props.navigation.navigate('Home');
+
+    replayHandler = () => {
+        console.log('replay')
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <Toolbar />
+                <Toolbar home={true} homeHandler={this.homeHandler} replay={true} replayHandler={this.replayHandler}/>
                 <Text>{this.state.start}</Text>
                 <Text>{this.state.goal}</Text>
                 <Text>{this.state.count}</Text>
