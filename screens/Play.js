@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View, Button, NetInfo} from 'react-native';
+import {AsyncStorage, ActivityIndicator, StyleSheet, Text, View, Button, NetInfo} from 'react-native';
 import Toolbar from '../components/Toolbar'
 import Loading from '../components/Loading'
 import Disconnected from './Disconnected'
@@ -37,17 +37,33 @@ export default class Play extends Component {
         this.setState({isConnected: isConnected});
     }
 
-    getRandomPages = () => {
-        const url = 'https://en.wikipedia.org/w/api.php?action=query&list=random&rnlimit=2&rnnamespace=0&format=json'
-        fetch(url).then(response => response.json()).then(response => {
-            this.setState({
-                isLoading: false,
-                start: response.query.random[0],
-                goal: response.query.random[1]
-            });
-        }).catch((error) => {
-            console.error(error);
-        });
+    getRandomPages = async () => {
+        try {
+            const random = await AsyncStorage.getItem('random');
+            if (random === 'popular') {
+                const max = constants.POPULAR_PAGES.length;
+                this.setState({
+                    isLoading: false,
+                    start: constants.POPULAR_PAGES[Math.floor(Math.random() * Math.floor(max))],
+                    goal: constants.POPULAR_PAGES[Math.floor(Math.random() * Math.floor(max))]
+                });
+
+            }
+            else {
+                const url = 'https://en.wikipedia.org/w/api.php?action=query&list=random&rnlimit=2&rnnamespace=0&format=json'
+                fetch(url).then(response => response.json()).then(response => {
+                    this.setState({
+                        isLoading: false,
+                        start: response.query.random[0],
+                        goal: response.query.random[1]
+                    });
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
     }
 
     settingsHandler = () => this.props.navigation.navigate('Settings');

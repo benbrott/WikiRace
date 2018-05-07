@@ -14,7 +14,7 @@ export default class Game extends Component {
             isLoading: true,
             start: params.start,
             current: params.start,
-            goal: {title: '2 Chainz'},//params.goal,
+            goal: params.goal,
             count: 0,
             dims: Dimensions.get('window')
         }
@@ -37,7 +37,7 @@ export default class Game extends Component {
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('connectionChange', this.onConnectivityChange);
-        this.linkClicked({title: 'Kanye West'});//this.state.current
+        this.linkClicked(this.state.current);
     }
 
     componentWillUnmount() {
@@ -76,8 +76,8 @@ export default class Game extends Component {
         if (current.title == this.state.goal.title) {
             console.log('WINNER!');
             this.props.navigation.navigate('Summary', {
-                start: this.state.start.title,
-                goal: this.state.goal.title,
+                start: this.state.start,
+                goal: this.state.goal,
                 count: this.state.count + 1
             });
         }
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     landscapeContainer: {
-        paddingHorizontal: 35,
+        paddingHorizontal: constants.IPHONEX_PADDING,
     },
     card: {
         backgroundColor: constants.COLOR_SECONDARY,
