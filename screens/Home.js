@@ -4,6 +4,9 @@ import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import Toolbar from '../components/Toolbar'
 
 export default class Home extends Component {
+    constructor(props) {
+        super(props);
+    }
     settingsHandler = () => this.props.navigation.navigate('Settings');
 
     scoresHandler = () => this.props.navigation.navigate('Scores');
@@ -21,7 +24,6 @@ export default class Home extends Component {
       );
     }
 }
-
 const styles = StyleSheet.create({
   container: {
       flex: 1

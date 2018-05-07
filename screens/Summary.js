@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
 import Toolbar from '../components/Toolbar'
+import { NavigationActions } from 'react-navigation';
 import * as constants from '../constants'
 
 export default class Summary extends Component {
@@ -15,10 +16,19 @@ export default class Summary extends Component {
         }
     }
 
-    homeHandler = () => this.props.navigation.navigate('Home');
+    homeHandler = () => {
+        this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0, key: null, actions: [NavigationActions.navigate({ routeName: 'Home' })]
+        }));
+    }
 
     replayHandler = () => {
-        console.log('replay')
+        this.props.navigation.dispatch(NavigationActions.reset({
+            index: 0, key: null, actions: [NavigationActions.navigate({ routeName: 'Game', params: {
+                start: this.state.start,
+                goal: this.state.goal
+            }})]
+        }));
     }
 
     render() {

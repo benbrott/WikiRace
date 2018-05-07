@@ -1,7 +1,8 @@
 'use strict';
 import React, {Component} from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo, Dimensions, Platform} from 'react-native';
 import Toolbar from '../components/Toolbar'
+import Loading from '../components/Loading'
 import Disconnected from './Disconnected'
 import * as constants from '../constants'
 
@@ -14,7 +15,8 @@ export default class Game extends Component {
             start: params.start,
             current: params.start,
             goal: {title: '2 Chainz'},//params.goal,
-            count: 0
+            count: 0,
+            dims: Dimensions.get('window')
         }
         NetInfo.isConnected.fetch().then(isConnected => {
             this.setState({
@@ -25,6 +27,14 @@ export default class Game extends Component {
         });
     }
 
+    dimensionsHandler = () => {
+        this.setState({dims: Dimensions.get('window')});
+    }
+
+    componentWillMount() {
+        Dimensions.addEventListener('change', this.dimensionsHandler);
+    }
+
     componentDidMount() {
         NetInfo.isConnected.addEventListener('connectionChange', this.onConnectivityChange);
         this.linkClicked({title: 'Kanye West'});//this.state.current
@@ -32,6 +42,7 @@ export default class Game extends Component {
 
     componentWillUnmount() {
         NetInfo.removeEventListener('connectionChange', this.onConnectivityChange);
+        Dimensions.removeEventListener('change', this.dimensionsHandler);
     }
 
     onConnectivityChange = isConnected => {
@@ -101,15 +112,15 @@ export default class Game extends Component {
         if(this.state.isLoading) {
             return(
                 <View style={styles.container}>
-                <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
-                  <ActivityIndicator/>
+                    <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
+                    <Loading />
                 </View>
             )
         }
       return (
           <View style={styles.container}>
             <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
-            <ScrollView contentContainerStyle={styles.contentContainer}>
+            <ScrollView contentContainerStyle={[styles.contentContainer, constants.isIPhoneXLandscape(Platform.OS, this.state.dims) ? styles.landscapeContainer : null]}>
                 {this.renderLinks()}
           </ScrollView>
           <View style={{flex: 1, bottom: 40, right: 40, width: 100, height: 100, zIndex: 1, position: 'absolute', alignItems: 'center', justifyContent: 'center'}}>
@@ -130,7 +141,10 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
         paddingHorizontal: 5,
-        paddingVertical: 20
+        paddingVertical: 10
+    },
+    landscapeContainer: {
+        paddingHorizontal: 35,
     },
     card: {
         backgroundColor: constants.COLOR_SECONDARY,

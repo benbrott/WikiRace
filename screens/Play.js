@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View, Button, NetInfo} from 'react-native';
 import Toolbar from '../components/Toolbar'
+import Loading from '../components/Loading'
 import Disconnected from './Disconnected'
 import * as constants from '../constants'
 
@@ -63,7 +64,7 @@ export default class Play extends Component {
             return(
                 <View style={styles.container}>
                     <Toolbar back={true} backHandler={this.backHandler} settings={true} settingsHandler={this.settingsHandler}/>
-                  <ActivityIndicator/>
+                    <Loading />
                 </View>
             )
         }

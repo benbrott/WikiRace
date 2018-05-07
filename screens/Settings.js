@@ -1,8 +1,9 @@
 'use strict';
 import React, {Component} from 'react';
-import {AsyncStorage, ActivityIndicator, StyleSheet, Text, View, Button} from 'react-native';
+import {AsyncStorage, StyleSheet, Text, View, Button} from 'react-native';
 import * as constants from '../constants'
 import Toolbar from '../components/Toolbar'
+import Loading from '../components/Loading'
 
 export default class Settings extends Component {
     constructor(props){
@@ -29,8 +30,8 @@ export default class Settings extends Component {
         if (this.state.isLoading) {
             return(
                 <View style={styles.container}>
-                <Toolbar back={true} backHandler={this.backHandler}/>
-                  <ActivityIndicator/>
+                    <Toolbar back={true} backHandler={this.backHandler}/>
+                    <Loading />
                 </View>
             )
         }

@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import * as constants from '../constants'
 import Toolbar from '../components/Toolbar'
 
