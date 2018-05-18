@@ -42,10 +42,16 @@ export default class Play extends Component {
             const random = await AsyncStorage.getItem('random');
             if (random === 'popular') {
                 const max = constants.POPULAR_PAGES.length;
+                var start = null;
+                var goal = null;
+                while (start == goal) {
+                    start = constants.POPULAR_PAGES[Math.floor(Math.random() * Math.floor(max))]
+                    goal = constants.POPULAR_PAGES[Math.floor(Math.random() * Math.floor(max))]
+                }
                 this.setState({
                     isLoading: false,
-                    start: constants.POPULAR_PAGES[Math.floor(Math.random() * Math.floor(max))],
-                    goal: constants.POPULAR_PAGES[Math.floor(Math.random() * Math.floor(max))]
+                    start: start,
+                    goal: goal
                 });
 
             }

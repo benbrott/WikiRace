@@ -57,11 +57,22 @@ export default class Game extends Component {
                 this.updateLinks(current, updatedLinks, response.continue.plcontinue);
             }
             else {
-                this.setState({
-                    isLoading: false,
-                    current: current,
-                    links: updatedLinks
-                });
+                if (this.state.startTime) {
+                    this.setState({
+                        isLoading: false,
+                        current: current,
+                        links: updatedLinks
+                    });
+                }
+                else {
+                    this.setState({
+                        isLoading: false,
+                        current: current,
+                        links: updatedLinks,
+                        startTime: Date.now()
+                    });
+                }
+
             }
         }).catch((error) => {
             console.error(error);
@@ -78,7 +89,8 @@ export default class Game extends Component {
             this.props.navigation.navigate('Summary', {
                 start: this.state.start,
                 goal: this.state.goal,
-                count: this.state.count + 1
+                count: this.state.count + 1,
+                time: Date.now() - this.state.startTime
             });
         }
         else {

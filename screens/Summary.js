@@ -12,7 +12,8 @@ export default class Summary extends Component {
         this.state = {
             start: params.start,
             goal: params.goal,
-            count: params.count
+            count: params.count,
+            time: params.time,
         }
     }
 
@@ -38,6 +39,7 @@ export default class Summary extends Component {
                 <Text>{this.state.start.title}</Text>
                 <Text>{this.state.goal.title}</Text>
                 <Text>{this.state.count}</Text>
+                <Text>{String(this.state.time)}</Text>
             </View>
         );
     }
