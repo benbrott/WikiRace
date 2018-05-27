@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Button, AsyncStorage} from 'react-native';
 import Toolbar from '../components/Toolbar'
 import { NavigationActions } from 'react-navigation';
 import * as constants from '../constants'
@@ -14,6 +14,36 @@ export default class Summary extends Component {
             goal: params.goal,
             count: params.count,
             time: params.time,
+            path: params.path
+        }
+        this.fetchScores();
+    }
+
+    fetchScores = async () => {
+        try {
+            var scores = await AsyncStorage.getItem('scores');
+            if (scores) {
+                scores = JSON.parse(scores);
+                scores.push({
+                    start: this.state.start,
+                    goal: this.state.goal,
+                    count: this.state.count,
+                    time: this.state.time,
+                    path: this.state.path
+                });
+                AsyncStorage.setItem('scores', JSON.stringify(scores));
+            }
+            else {
+                AsyncStorage.setItem('scores', JSON.stringify([{
+                    start: this.state.start,
+                    goal: this.state.goal,
+                    count: this.state.count,
+                    time: this.state.time,
+                    path: this.state.path
+                }]));
+            }
+        } catch (error) {
+            // Error retrieving data
         }
     }
 

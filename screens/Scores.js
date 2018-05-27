@@ -7,35 +7,27 @@ export default class Scores extends Component {
     constructor(props){
         super(props);
         this.state = {};
-        this.fetchData();
+        this.fetchScores();
     }
 
-    backHandler = () => this.props.navigation.goBack();
-
-    fetchData = async () => {
+    fetchScores = async () => {
         try {
-            const value = await AsyncStorage.getItem('name');
-            console.log(value);
-            if (value != null) {
-                this.setState({'name': value})
-                console.log(value);
-            }
+            var scores = await AsyncStorage.getItem('scores');
+            scores = JSON.parse(scores);
+            console.log(scores)
         } catch (error) {
             // Error retrieving data
         }
     }
 
+    backHandler = () => this.props.navigation.goBack();
+
     render() {
-      return (
-        <View style={styles.container}>
-            <Toolbar back={true} backHandler={this.backHandler} />
-          <Text>{this.state.name != null ? this.state.name : 'NULL'}</Text>
-          <Button
-            title='Go back'
-            onPress={() => this.props.navigation.goBack()}
-          />
-        </View>
-      );
+        return (
+            <View style={styles.container}>
+                <Toolbar back={true} backHandler={this.backHandler} />
+            </View>
+        );
     }
 }
 

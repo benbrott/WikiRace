@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo, Dimensions, Platform} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, NetInfo, Dimensions, Platform} from 'react-native';
 import Toolbar from '../components/Toolbar'
 import Loading from '../components/Loading'
 import Disconnected from './Disconnected'
@@ -15,8 +15,10 @@ export default class Game extends Component {
             start: params.start,
             current: params.start,
             goal: params.goal,
+            path: [params.start],
             count: 0,
-            dims: Dimensions.get('window')
+            dims: Dimensions.get('window'),
+            os: Platform.OS
         }
         NetInfo.isConnected.fetch().then(isConnected => {
             this.setState({
@@ -58,10 +60,13 @@ export default class Game extends Component {
             }
             else {
                 if (this.state.startTime) {
+                    var path = this.state.path;
+                    path.push(current)
                     this.setState({
                         isLoading: false,
                         current: current,
-                        links: updatedLinks
+                        links: updatedLinks,
+                        path: path
                     });
                 }
                 else {
@@ -79,18 +84,31 @@ export default class Game extends Component {
         });
     }
 
-    homeHandler = () => this.props.navigation.navigate('Home');
+    homeHandler = () => {
+        Alert.alert(
+            'Are you sure you want to quit?',
+            'Progress will not be saved',
+            [
+                {text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel'},
+                {text: 'Quit', onPress: () => this.props.navigation.navigate('Home'), style: 'destructive'}
+            ],
+            { cancelable: false }
+        );
+    }
 
     scoresHandler = () => this.props.navigation.navigate('Scores');
 
     linkClicked = (current) => {
         if (current.title == this.state.goal.title) {
             console.log('WINNER!');
+            var path = this.state.path;
+            path.push(current)
             this.props.navigation.navigate('Summary', {
                 start: this.state.start,
                 goal: this.state.goal,
                 count: this.state.count + 1,
-                time: Date.now() - this.state.startTime
+                time: Date.now() - this.state.startTime,
+                path: path
             });
         }
         else {
@@ -109,7 +127,7 @@ export default class Game extends Component {
                     });
                     this.linkClicked(link);
                 }} style={styles.card} key={i}>
-                        <Text style={styles.link}>{link.title}</Text>
+                        <Text style={styles.whiteText}>{link.title}</Text>
                 </TouchableOpacity>
             );
       });
@@ -126,20 +144,26 @@ export default class Game extends Component {
                 <View style={styles.container}>
                     <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
                     <Loading />
+                    <View style={[styles.bar, constants.isIPhoneX(this.state.os, this.state.dims) ? styles.barExtraPadding : null]}>
+                        <Text style={styles.whiteText}>Goal: {this.state.goal.title}</Text>
+                        <Text style={styles.whiteText}>{this.state.count}</Text>
+                    </View>
                 </View>
             )
         }
-      return (
-          <View style={styles.container}>
-            <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
-            <ScrollView contentContainerStyle={[styles.contentContainer, constants.isIPhoneXLandscape(Platform.OS, this.state.dims) ? styles.landscapeContainer : null]}>
+
+        return (
+            <View style={styles.container}>
+                <Toolbar home={true} homeHandler={this.homeHandler} scores={true} scoresHandler={this.scoresHandler} />
+                <ScrollView contentContainerStyle={[styles.contentContainer, constants.isIPhoneXLandscape(this.state.os, this.state.dims) ? styles.landscapeContainer : null]}>
                 {this.renderLinks()}
-          </ScrollView>
-          <View style={{flex: 1, bottom: 40, right: 40, width: 100, height: 100, zIndex: 1, position: 'absolute', alignItems: 'center', justifyContent: 'center'}}>
-              <Text>{this.state.count}</Text>
-          </View>
-        </View>
-      );
+                </ScrollView>
+                <View style={[styles.bar, constants.isIPhoneX(this.state.os, this.state.dims) ? styles.barExtraPadding : null]}>
+                    <Text style={styles.whiteText}>Goal: {this.state.goal.title}</Text>
+                    <Text style={styles.whiteText}>{this.state.count}</Text>
+                </View>
+            </View>
+        );
     }
 }
 
@@ -164,8 +188,21 @@ const styles = StyleSheet.create({
         margin: 3,
         borderRadius: 10
     },
-    link: {
+    whiteText: {
         fontSize: 14,
         color: 'white'
+    },
+    bar: {
+        backgroundColor: constants.COLOR_MAIN,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    barExtraPadding: {
+        paddingHorizontal: 20,
+        paddingBottom: 20
     },
 });
